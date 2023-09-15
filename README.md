@@ -72,3 +72,25 @@ SELECT ANIMAL_ID
  WHERE INTAKE_CONDITION != 'Aged'
  ORDER BY ANIMAL_ID ;
 ```
+
+#### 6. 서울에 위치한 식당 목록 출력하기
+- REST_INFO와 REST_REVIEW 테이블에서 서울에 위치한 식당들의 식당 ID, 식당 이름, 음식 종류, 즐겨찾기수, 주소, 리뷰 평균 점수를 조회하는 SQL문을 작성해주세요. 이때 리뷰 평균점수는 소수점 세 번째 자리에서 반올림 해주시고 결과는 평균점수를 기준으로 내림차순 정렬해주시고, 평균점수가 같다면 즐겨찾기수를 기준으로 내림차순 정렬해주세요.
+
+```SQL
+SELECT A.REST_ID
+     , A.REST_NAME
+     , A.FOOD_TYPE
+     , A.FAVORITES
+     , A.ADDRESS
+     , ROUND(AVG(B.REVIEW_SCORE),2) AS SCORE	-- ROUND(컬럼,나타낼 소숫점 자리수) : 반올림
+     
+  FROM REST_INFO                AS A
+       INNER JOIN REST_REVIEW   AS B
+               ON ( A.REST_ID = B.REST_ID )
+               
+ WHERE A.ADDRESS LIKE '서울%'			-- 주소가 서울인
+ 
+ GROUP BY A.REST_ID 				-- REST_ID를 기준으로 그룹화
+               
+ ORDER BY SCORE DESC, A.FAVORITES DESC ;
+```
