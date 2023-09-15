@@ -123,3 +123,16 @@ SELECT ANIMAL_TYPE, COUNT(*) AS 'count'
    HAVING ANIMAL_TYPE IN ('Cat', 'Dog')      -- GROUP BY 절의 결과에 조건을 붙이고 싶을 때
  ORDER BY ANIMAL_TYPE ;
 ```
+
+#### 3.동명 동물 수 찾기
+- 동물 보호소에 들어온 동물 이름 중 두 번 이상 쓰인 이름과 해당 이름이 쓰인 횟수를 조회하는 SQL문을 작성해주세요. 이때 결과는 이름이 없는 동물은 집계에서 제외하며, 결과는 이름 순으로 조회해주세요.
+
+```SQL
+/* ()안의 쿼리를 먼저 실행 */
+SELECT *
+  FROM ( SELECT NAME, COUNT(NAME) AS 'COUNT' 
+           FROM ANIMAL_INS WHERE NAME IS NOT NULL
+          GROUP BY NAME 
+          ORDER BY NAME ) C
+ WHERE COUNT > 1
+```
