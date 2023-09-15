@@ -10,4 +10,15 @@ SELECT FLAVOR
         , SHIPMENT_ID ASC ;
 ```
 
-2. 
+#### 2. 모든 레코드 조회하기
+- 동물 보호소에 들어온 모든 동물의 정보를 ANIMAL_ID순으로 조회하는 SQL문을 작성해주세요.
+``` SQL
+SELECT ANIMAL_ID
+     , ANIMAL_TYPE
+     , DATETIME
+     , INTAKE_CONDITION
+     , NAME
+     , SEX_UPON_INTAKE
+  FROM ANIMAL_INS
+ ORDER BY ANIMAL_ID ;
+```
