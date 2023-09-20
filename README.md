@@ -157,5 +157,12 @@ SELECT A.PRODUCT_CODE
 결과는 출판일을 기준으로 오름차순 정렬해주세요.
 
 ```SQL
-
+SELECT BOOK_ID
+     , AUTHOR_NAME
+     , DATE_FORMAT (PUBLISHED_DATE, "%Y-%m-%d") AS PUBLISHED_DATE
+  FROM BOOK AS B
+       JOIN AUTHOR AS A 
+         ON (B.AUTHOR_ID = A.AUTHOR_ID
+        AND B.CATEGORY = '경제') 	-- WHERE을 따로 쓰지 않고 ON에 AND로 함께 작성
+ ORDER BY PUBLISHED_DATE ASC; 
 ```
