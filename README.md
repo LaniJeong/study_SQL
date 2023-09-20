@@ -94,6 +94,18 @@ SELECT A.REST_ID
                
  ORDER BY SCORE DESC, A.FAVORITES DESC ;
 ```
+#### 7. 과일로 만든 아이스크림 고르기
+- 상반기 아이스크림 총주문량이 3,000보다 높으면서 아이스크림의 주 성분이 과일인 아이스크림의 맛을 총주문량이 큰 순서대로 조회하는 SQL 문을 작성해주세요.
+
+```SQL
+SELECT B.FLAVOR
+  FROM FIRST_HALF   AS A
+       LEFT OUTER JOIN ICECREAM_INFO   AS B
+         ON (A.FLAVOR = B.FLAVOR)
+ WHERE A.TOTAL_ORDER > 3000
+   AND B.INGREDIENT_TYPE =  'FRUIT_BASED'
+ ORDER BY A.TOTAL_ORDER DESC ;
+```
 
 ### GROUP BY
 #### 1. 성분으로 구분한 아이스크림 총 주문량
