@@ -137,6 +137,136 @@ SELECT B.TITLE
         , B.TITLE ASC ;
 ```
 
+#### 10. 조건에 맞는 도서 리스트 출력하기
+- BOOK 테이블에서 2021년에 출판된 '인문' 카테고리에 속하는 도서 리스트를 찾아서 도서 ID(BOOK_ID), 출판일 (PUBLISHED_DATE)을 출력하는 SQL문을 작성해주세요.
+결과는 출판일을 기준으로 오름차순 정렬해주세요.
+
+```SQL
+SELECT BOOK_ID
+     , DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE
+  FROM BOOK
+ WHERE PUBLISHED_DATE LIKE '2021-%%-%%'
+   AND CATEGORY = '인문'
+ ORDER BY PUBLISHED_DATE ASC ;
+```
+
+#### 11. 3월에 태어난 여성 회원 목록 출력하기
+- MEMBER_PROFILE 테이블에서 생일이 3월인 여성 회원의 ID, 이름, 성별, 생년월일을 조회하는 SQL문을 작성해주세요. 이때 전화번호가 NULL인 경우는 출력대상에서 제외시켜 주시고, 결과는 회원ID를 기준으로 오름차순 정렬해주세요.
+
+```SQL
+SELECT MEMBER_ID
+     , MEMBER_NAME
+     , GENDER
+     , DATE_FORMAT(DATE_OF_BIRTH, '%Y-%m-%d') AS DATE_OF_BIRTH
+  FROM MEMBER_PROFILE
+ WHERE DATE_OF_BIRTH LIKE '%%%%-03-%%'
+   AND GENDER = 'W'
+   AND TLNO IS NOT NULL
+ ORDER BY MEMBER_ID ASC ;
+```
+
+#### 12.흉부외과 또는 일반외과 의사 목록 출력하기
+- DOCTOR 테이블에서 진료과가 흉부외과(CS)이거나 일반외과(GS)인 의사의 이름, 의사ID, 진료과, 고용일자를 조회하는 SQL문을 작성해주세요. 이때 결과는 고용일자를 기준으로 내림차순 정렬하고, 고용일자가 같다면 이름을 기준으로 오름차순 정렬해주세요.
+
+```SQL
+SELECT DR_NAME
+     , DR_ID
+     , MCDP_CD
+     , DATE_FORMAT(HIRE_YMD,'%Y-%m-%d') AS HIRE_YMD
+  FROM DOCTOR
+ WHERE MCDP_CD IN ('CS', 'GS')	-- IN 사용법 숙지하기
+ ORDER BY HIRE_YMD DESC ;
+```
+#### 13. 평균 일일 대여 요금 구하기
+- CAR_RENTAL_COMPANY_CAR 테이블에서 자동차 종류가 'SUV'인 자동차들의 평균 일일 대여 요금을 출력하는 SQL문을 작성해주세요. 이때 평균 일일 대여 요금은 소수 첫 번째 자리에서 반올림하고, 컬럼명은 AVERAGE_FEE 로 지정해주세요.
+
+```SQL
+SELECT ROUND(AVG(DAILY_FEE)) AS AVERAGE_FEE	-- ROUND로 소수 첫번째 자리에서 반올림
+  FROM CAR_RENTAL_COMPANY_CAR 
+ WHERE CAR_TYPE = 'SUV'
+```
+
+#### 14. 12세 이하인 여자 환자 목록 출력하기
+- PATIENT 테이블에서 12세 이하인 여자환자의 환자이름, 환자번호, 성별코드, 나이, 전화번호를 조회하는 SQL문을 작성해주세요. 이때 전화번호가 없는 경우, 'NONE'으로 출력시켜 주시고 결과는 나이를 기준으로 내림차순 정렬하고, 나이 같다면 환자이름을 기준으로 오름차순 정렬해주세요.
+
+```SQL
+SELECT PT_NAME
+     , PT_NO
+     , GEND_CD
+     , AGE
+     , COALESCE(TLNO, 'NONE') AS TLNO   -- NULL이 아닌 첫번째 값을 반환
+  FROM PATIENT
+ WHERE AGE < 13
+   AND GEND_CD = 'W'
+ ORDER BY AGE DESC
+        , PT_NAME ASC ;
+```
+
+#### 15. 재구매가 일어난 상품과 회원 리스트 구하기
+- ONLINE_SALE 테이블에서 동일한 회원이 동일한 상품을 재구매한 데이터를 구하여, 재구매한 회원 ID와 재구매한 상품 ID를 출력하는 SQL문을 작성해주세요. 결과는 회원 ID를 기준으로 오름차순 정렬해주시고 회원 ID가 같다면 상품 ID를 기준으로 내림차순 정렬해주세요.
+
+```SQL
+SELECT USER_ID
+     , PRODUCT_ID
+  FROM ONLINE_SALE
+ GROUP BY USER_ID, PRODUCT_ID
+HAVING COUNT (USER_ID) > 1      -- GROUP BY 로 묶어서 조건절(HAVING)사용, AND와 OR로 여러개의 조건 사용 가능
+ ORDER BY USER_ID ASC
+        , PRODUCT_ID DESC ;
+```
+
+#### 16. 역순 정렬하기
+- 동물 보호소에 들어온 모든 동물의 이름과 보호 시작일을 조회하는 SQL문을 작성해주세요. 이때 결과는 ANIMAL_ID 역순으로 보여주세요. SQL을 실행하면 다음과 같이 출력되어야 합니다.
+
+```SQL
+SELECT NAME
+     , DATETIME
+  FROM ANIMAL_INS
+ ORDER BY ANIMAL_ID DESC ;
+```
+
+#### 17. 동물의 아이디와 이름
+- 동물 보호소에 들어온 모든 동물의 아이디와 이름을 ANIMAL_ID순으로 조회하는 SQL문을 작성해주세요. SQL을 실행하면 다음과 같이 출력되어야 합니다.
+
+```SQL
+SELECT ANIMAL_ID
+     , NAME
+  FROM ANIMAL_INS
+ ORDER BY ANIMAL_ID ASC ;
+```
+
+#### 18. 여러 기준으로 정렬하기
+- 동물 보호소에 들어온 모든 동물의 아이디와 이름, 보호 시작일을 이름 순으로 조회하는 SQL문을 작성해주세요. 단, 이름이 같은 동물 중에서는 보호를 나중에 시작한 동물을 먼저 보여줘야 합니다.
+
+```SQL
+SELECT ANIMAL_ID
+     , NAME
+     , DATETIME
+  FROM ANIMAL_INS
+ ORDER BY NAME ASC
+        , DATETIME DESC ;
+```
+
+#### 19. 상위 n개 레코드
+- 동물 보호소에 가장 먼저 들어온 동물의 이름을 조회하는 SQL 문을 작성해주세요.
+
+```SQL
+SELECT NAME
+  FROM ANIMAL_INS
+ ORDER BY DATETIME ASC 
+ LIMIT 1;   -- LIMIT 사용법 숙지하기
+```
+
+#### 20. 조건에 맞는 회원수 구하기
+- USER_INFO 테이블에서 2021년에 가입한 회원 중 나이가 20세 이상 29세 이하인 회원이 몇 명인지 출력하는 SQL문을 작성해주세요.
+
+``` SQL
+SELECT COUNT (*)                -- 전체를 세고
+  FROM USER_INFO                
+ WHERE YEAR(JOINED) = 2021      -- 2021년에 가입한
+   AND AGE BETWEEN 20 AND 29    -- 20~29
+```
+
 ### GROUP BY
 #### 1. 성분으로 구분한 아이스크림 총 주문량
 - 상반기 동안 각 아이스크림 성분 타입과 성분 타입에 대한 아이스크림의 총주문량을 총주문량이 작은 순서대로 조회하는 SQL 문을 작성해주세요. 이때 총주문량을 나타내는 컬럼명은 TOTAL_ORDER로 지정해주세요.
