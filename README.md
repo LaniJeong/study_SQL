@@ -119,6 +119,24 @@ SELECT FACTORY_ID
  ORDER BY FACTORY_ID ASC ;
 ```
 
+#### 9. 조건에 부합하는 중고거래 댓글 조회하기
+- USED_GOODS_BOARD와 USED_GOODS_REPLY 테이블에서 2022년 10월에 작성된 게시글 제목, 게시글 ID, 댓글 ID, 댓글 작성자 ID, 댓글 내용, 댓글 작성일을 조회하는 SQL문을 작성해주세요. 결과는 댓글 작성일을 기준으로 오름차순 정렬해주시고, 댓글 작성일이 같다면 게시글 제목을 기준으로 오름차순 정렬해주세요.
+
+```SQL
+SELECT B.TITLE
+     , B.BOARD_ID
+     , R.REPLY_ID
+     , R.WRITER_ID
+     , R.CONTENTS
+     , DATE_FORMAT(R.CREATED_DATE,'%Y-%m-%d') as CREATED_DATER	-- DATE_FORMAT 꼭 사용
+  FROM USED_GOODS_BOARD AS B
+       JOIN USED_GOODS_REPLY AS R
+         ON (B.BOARD_ID = R.BOARD_ID)
+ WHERE B.CREATED_DATE LIKE '2022-10-%%'
+ ORDER BY R.CREATED_DATE ASC
+        , B.TITLE ASC ;
+```
+
 ### GROUP BY
 #### 1. 성분으로 구분한 아이스크림 총 주문량
 - 상반기 동안 각 아이스크림 성분 타입과 성분 타입에 대한 아이스크림의 총주문량을 총주문량이 작은 순서대로 조회하는 SQL 문을 작성해주세요. 이때 총주문량을 나타내는 컬럼명은 TOTAL_ORDER로 지정해주세요.
