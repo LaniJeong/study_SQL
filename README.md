@@ -107,6 +107,18 @@ SELECT B.FLAVOR
  ORDER BY A.TOTAL_ORDER DESC ;
 ```
 
+#### 8. 강원도에 위치한 생산공장 목록 출력하기
+- FOOD_FACTORY 테이블에서 강원도에 위치한 식품공장의 공장 ID, 공장 이름, 주소를 조회하는 SQL문을 작성해주세요. 이때 결과는 공장 ID를 기준으로 오름차순 정렬해주세요.
+
+```SQL
+SELECT FACTORY_ID
+     , FACTORY_NAME
+     , ADDRESS
+  FROM FOOD_FACTORY
+ WHERE ADDRESS LIKE '강원도%%'
+ ORDER BY FACTORY_ID ASC ;
+```
+
 ### GROUP BY
 #### 1. 성분으로 구분한 아이스크림 총 주문량
 - 상반기 동안 각 아이스크림 성분 타입과 성분 타입에 대한 아이스크림의 총주문량을 총주문량이 작은 순서대로 조회하는 SQL 문을 작성해주세요. 이때 총주문량을 나타내는 컬럼명은 TOTAL_ORDER로 지정해주세요.
