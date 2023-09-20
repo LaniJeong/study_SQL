@@ -267,6 +267,57 @@ SELECT COUNT (*)                -- 전체를 세고
    AND AGE BETWEEN 20 AND 29    -- 20~29
 ```
 
+### SUM,MAX,MIN
+#### 1. 가장 비싼 상품 구하기
+- PRODUCT 테이블에서 판매 중인 상품 중 가장 높은 판매가를 출력하는 SQL문을 작성해주세요. 이때 컬럼명은 MAX_PRICE로 지정해주세요.
+
+```SQL
+SELECT MAX(PRICE) AS MAX_PRICE
+  FROM PRODUCT
+```
+
+#### 2. 최댓값 구하기
+- 가장 최근에 들어온 동물은 언제 들어왔는지 조회하는 SQL 문을 작성해주세요.
+
+```SQL
+SELECT MAX(DATETIME) AS '시간'
+  FROM ANIMAL_INS
+```
+
+#### 3. 최솟값 구하기
+- 동물 보호소에 가장 먼저 들어온 동물은 언제 들어왔는지 조회하는 SQL 문을 작성해주세요.
+
+```SQL
+SELECT MIN(DATETIME) AS '시간'
+  FROM ANIMAL_INS
+```
+
+#### 4. 동물 수 구하기
+- 동물 보호소에 동물이 몇 마리 들어왔는지 조회하는 SQL 문을 작성해주세요.
+
+```SQL
+SELECT COUNT(ANIMAL_ID) AS 'COUNT'
+  FROM ANIMAL_INS
+```
+
+#### 5. 중복 제거하기
+- 동물 보호소에 들어온 동물의 이름은 몇 개인지 조회하는 SQL 문을 작성해주세요. 이때 이름이 NULL인 경우는 집계하지 않으며 중복되는 이름은 하나로 칩니다.
+
+```SQL
+SELECT COUNT( DISTINCT NAME) AS 'COUNT' -- 중복제거(DISTINCT) 후 COUNT
+  FROM ANIMAL_INS
+```
+
+####  6. 가격이 제일 비싼 식품의 정보 출력하기
+- FOOD_PRODUCT 테이블에서 가격이 제일 비싼 식품의 식품 ID, 식품 이름, 식품 코드, 식품분류, 식품 가격을 조회하는 SQL문을 작성해주세요.
+
+```SQL
+SELECT *
+  FROM FOOD_PRODUCT
+ ORDER BY PRICE DESC
+ LIMIT 1 ;
+```
+
 ### GROUP BY
 #### 1. 성분으로 구분한 아이스크림 총 주문량
 - 상반기 동안 각 아이스크림 성분 타입과 성분 타입에 대한 아이스크림의 총주문량을 총주문량이 작은 순서대로 조회하는 SQL 문을 작성해주세요. 이때 총주문량을 나타내는 컬럼명은 TOTAL_ORDER로 지정해주세요.
