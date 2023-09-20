@@ -166,3 +166,19 @@ SELECT BOOK_ID
         AND B.CATEGORY = '경제') 	-- WHERE을 따로 쓰지 않고 ON에 AND로 함께 작성
  ORDER BY PUBLISHED_DATE ASC; 
 ```
+
+#### 3. 없어진 기록 찾기
+- 천재지변으로 인해 일부 데이터가 유실되었습니다. 입양을 간 기록은 있는데, 보호소에 들어온 기록이 없는 동물의 ID와 이름을 ID 순으로 조회하는 SQL문을 작성해주세요.
+
+```SQL
+/* 입양을 간 기록은 있는데(ANIMAL_OUTS이 기준 테이블) 
+   보호소에 들어온 기록이 없는(I.ANIMAL_ID IS NULL)
+   O.ANIMAL_ID / O.NAME ID순으로 조회 */
+SELECT O.ANIMAL_ID
+     , O.NAME
+  FROM ANIMAL_OUTS AS O
+       LEFT JOIN ANIMAL_INS AS I
+              ON O.ANIMAL_ID = I.ANIMAL_ID
+ WHERE I.ANIMAL_ID IS NULL
+ ORDER BY I.ANIMAL_ID 
+```
