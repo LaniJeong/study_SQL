@@ -450,6 +450,7 @@ SELECT A.ANIMAL_ID
 
 #### 5. 오랜 기간 보호한 동물(1)
 - 아직 입양을 못 간 동물 중, 가장 오래 보호소에 있었던 동물 3마리의 이름과 보호 시작일을 조회하는 SQL문을 작성해주세요. 이때 결과는 보호 시작일 순으로 조회해야 합니다.
+
 ```SQL
 SELECT A.NAME
      , A.DATETIME
@@ -464,6 +465,7 @@ SELECT A.NAME
 
 #### 6. 보호소에서 중성화한 동물
 - 보호소에서 중성화 수술을 거친 동물 정보를 알아보려 합니다. 보호소에 들어올 당시에는 중성화1되지 않았지만, 보호소를 나갈 당시에는 중성화된 동물의 아이디와 생물 종, 이름을 조회하는 아이디 순으로 조회하는 SQL 문을 작성해주세요.
+
 ```SQL
 SELECT A.ANIMAL_ID
      , B.ANIMAL_TYPE
@@ -479,6 +481,7 @@ SELECT A.ANIMAL_ID
 
 #### 7. 주문량이 많은 아이스크림들 조회하기
 - 7월 아이스크림 총 주문량과 상반기의 아이스크림 총 주문량을 더한 값이 큰 순서대로 상위 3개의 맛을 조회하는 SQL 문을 작성해주세요.
+
 ```SQL
 SELECT A.FLAVOR
   FROM FIRST_HALF       A
@@ -488,10 +491,20 @@ SELECT A.FLAVOR
  ORDER BY SUM(A.TOTAL_ORDER + B.TOTAL_ORDER) DESC LIMIT 3
 ```
 
-#### 8. 
--
-```SQL
+#### 8. 5월 식품들의 총매출 조회하기
+- FOOD_PRODUCT와 FOOD_ORDER 테이블에서 생산일자가 2022년 5월인 식품들의 식품 ID, 식품 이름, 총매출을 조회하는 SQL문을 작성해주세요. 이때 결과는 총매출을 기준으로 내림차순 정렬해주시고 총매출이 같다면 식품 ID를 기준으로 오름차순 정렬해주세요.
 
+```SQL
+SELECT A.PRODUCT_ID
+     , A.PRODUCT_NAME
+     , A.PRICE * SUM(B.AMOUNT) AS TOTAL_SALES
+  FROM FOOD_PRODUCT             A
+  LEFT OUTER JOIN FOOD_ORDER    B
+               ON ( B.PRODUCT_ID = A.PRODUCT_ID )
+ WHERE B.PRODUCE_DATE LIKE '2022-05-%%'
+ GROUP BY A.PRODUCT_ID
+ ORDER BY TOTAL_SALES   DESC
+        , A.PRODUCT_ID  ASC
 ```
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
