@@ -516,8 +516,105 @@ SELECT A.PRODUCT_ID
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### IS NULL
-#### 1. 
--
+#### 1. 경기도에 위치한 식품창고 목록 출력하기
+- FOOD_WAREHOUSE 테이블에서 경기도에 위치한 창고의 ID, 이름, 주소, 냉동시설 여부를 조회하는 SQL문을 작성해주세요. 이때 냉동시설 여부가 NULL인 경우, 'N'으로 출력시켜 주시고 결과는 창고 ID를 기준으로 오름차순 정렬해주세요.
+```SQL
+SELECT WAREHOUSE_ID
+     , WAREHOUSE_NAME
+     , ADDRESS
+     , (CASE WHEN FREEZER_YN IS NULL THEN 'N'
+            ELSE FREEZER_YN 
+            END)                AS FREEZER_YN
+  FROM FOOD_WAREHOUSE
+ WHERE ADDRESS LIKE '%경기도%'
+ ORDER BY WAREHOUSE_ID
+```
+
+#### 2. 이름이 없는 동물의 아이디
+- 동물 보호소에 들어온 동물 중, 이름이 없는 채로 들어온 동물의 ID를 조회하는 SQL 문을 작성해주세요. 단, ID는 오름차순 정렬되어야 합니다.
+
+```SQL
+SELECT ANIMAL_ID
+  FROM ANIMAL_INS
+ WHERE NAME IS NULL
+ ORDER BY ANIMAL_ID
+```
+
+#### 3. 이름이 있는 동물의 아이디
+- 동물 보호소에 들어온 동물 중, 이름이 있는 동물의 ID를 조회하는 SQL 문을 작성해주세요. 단, ID는 오름차순 정렬되어야 합니다.
+
+```SQL
+SELECT ANIMAL_ID
+  FROM ANIMAL_INS
+ WHERE NAME IS NOT NULL
+ ORDER BY ANIMAL_ID
+```
+
+#### 4. NULL 처리하기
+- 입양 게시판에 동물 정보를 게시하려 합니다. 동물의 생물 종, 이름, 성별 및 중성화 여부를 아이디 순으로 조회하는 SQL문을 작성해주세요. 이때 프로그래밍을 모르는 사람들은 NULL이라는 기호를 모르기 때문에, 이름이 없는 동물의 이름은 "No name"으로 표시해 주세요.
+
+```SQL
+SELECT ANIMAL_TYPE
+     , CASE WHEN NAME IS NULL THEN 'No name'
+            ELSE NAME
+            END
+     , SEX_UPON_INTAKE
+  FROM ANIMAL_INS
+ ORDER BY ANIMAL_ID
+```
+
+#### 5. 나이 정보가 없는 회원 수 구하기
+- USER_INFO 테이블에서 나이 정보가 없는 회원이 몇 명인지 출력하는 SQL문을 작성해주세요. 이때 컬럼명은 USERS로 지정해주세요.
+
+```SQL
+SELECT COUNT(USER_ID) AS USERS
+  FROM USER_INFO
+ WHERE AGE IS NULL
+```
+
+#### 6. ROOT 아이템 구하기
+- ROOT 아이템을 찾아 아이템 ID(ITEM_ID), 아이템 명(ITEM_NAME)을 출력하는 SQL문을 작성해 주세요. 이때, 결과는 아이템 ID를 기준으로 오름차순 정렬해 주세요.
+
+```SQL
+SELECT A.ITEM_ID
+     , A.ITEM_NAME
+  FROM ITEM_INFO            A
+  LEFT OUTER JOIN ITEM_TREE B
+               ON (B.ITEM_ID = A.ITEM_ID)
+ WHERE B.PARENT_ITEM_ID IS NULL
+ ORDER BY A.ITEM_ID
+```
+
+#### 7. 업그레이드 할 수 없는 아이템 구하기
+- 더 이상 업그레이드할 수 없는 아이템의 아이템 ID(ITEM_ID), 아이템 명(ITEM_NAME), 아이템의 희귀도(RARITY)를 출력하는 SQL 문을 작성해 주세요. 이때 결과는 아이템 ID를 기준으로 내림차순 정렬해 주세요.
+
+```SQL
+SELECT A.ITEM_ID
+     , A.ITEM_NAME
+     , A.RARITY
+  FROM ITEM_INFO                A
+  LEFT OUTER JOIN ITEM_TREE     B
+               ON (B.PARENT_ITEM_ID = A.ITEM_ID)
+ WHERE B.PARENT_ITEM_ID IS NULL
+ ORDER BY A.ITEM_ID DESC
+```
+
+#### 8. 잡은 물고기의 평균 길이 구하기
+- 잡은 물고기의 평균 길이를 출력하는 SQL문을 작성해주세요.
+  평균 길이를 나타내는 컬럼 명은 AVERAGE_LENGTH로 해주세요.
+  평균 길이는 소수점 3째자리에서 반올림하며, 10cm 이하의 물고기들은 10cm 로 취급하여 평균 길이를 구해주세요.
+
+```SQL
+SELECT ROUND(AVG(CASE WHEN LENGTH IS NULL THEN 10
+                      ELSE LENGTH
+                      END
+            ), 2)     AS AVERAGE_LENGTH
+  FROM FISH_INFO
+```
+
+#### 9. 
+- 
+
 ```SQL
 
 ```
