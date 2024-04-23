@@ -343,6 +343,27 @@ SELECT *
   WHERE RARITY LIKE 'LEGEND'
 ```
 
+####  8. 물고기 종류 별 대어 찾기
+- 물고기 종류 별로 가장 큰 물고기의 ID, 물고기 이름, 길이를 출력하는 SQL 문을 작성해주세요.
+  물고기의 ID 컬럼명은 ID, 이름 컬럼명은 FISH_NAME, 길이 컬럼명은 LENGTH로 해주세요.
+  결과는 물고기의 ID에 대해 오름차순 정렬해주세요.
+  단, 물고기 종류별 가장 큰 물고기는 1마리만 있으며 10cm 이하의 물고기가 가장 큰 경우는 없습니다.
+
+```SQL
+SELECT A.ID         AS ID
+     , B.FISH_NAME  AS FISH_NAME
+     , A.LENGTH     AS LENGTH
+  FROM FISH_INFO                A
+  INNER JOIN FISH_NAME_INFO     B
+          ON (B.FISH_TYPE = A.FISH_TYPE)
+ WHERE (B.FISH_NAME, A.LENGTH) IN (SELECT B.FISH_NAME
+                                        , MAX(A.LENGTH) AS LENGTH
+                                     FROM FISH_INFO                 A
+                                     LEFT OUTER JOIN FISH_NAME_INFO B
+                                                  ON (B.FISH_TYPE = A.FISH_TYPE)
+                                    GROUP BY B.FISH_NAME, A.FISH_TYPE)
+ ORDER BY A.ID
+```
 ------------------------------------------------------------------------------------------------------------------------------------
 
 ### GROUP BY
