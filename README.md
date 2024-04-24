@@ -328,6 +328,42 @@ SELECT COUNT(ID)  AS FISH_COUNT
   FROM FISH_INFO
  WHERE LENGTH IS NULL
 ```
+
+#### 25. 가장 큰 물고기 10마리 구하기
+- FISH_INFO 테이블에서 가장 큰 물고기 10마리의 ID와 길이를 출력하는 SQL 문을 작성해주세요.
+  결과는 길이를 기준으로 내림차순 정렬하고, 길이가 같다면 물고기의 ID에 대해 오름차순 정렬해주세요.
+  단, 가장 큰 물고기 10마리 중 길이가 10cm 이하인 경우는 없습니다.
+  ID 컬럼명은 ID, 길이 컬럼명은 LENGTH로 해주세요.
+
+```SQL
+SELECT ID
+     , LENGTH
+  FROM FISH_INFO
+ ORDER BY LENGTH DESC, ID
+ LIMIT 10
+```
+
+#### 26. 특정 물고기를 잡은 총 수 구하기
+- FISH_INFO 테이블에서 잡은 BASS와 SNAPPER의 수를 출력하는 SQL 문을 작성해주세요. 컬럼명은 'FISH_COUNT`로 해주세요.
+
+```SQL
+SELECT COUNT(ID)  AS FISH_COUNT
+  FROM FISH_INFO                    A
+  LEFT OUTER JOIN FISH_NAME_INFO    B
+               ON (B.FISH_TYPE = A.FISH_TYPE)
+ WHERE B.FISH_NAME IN ('BASS', 'SNAPPER')
+```
+
+#### 27. 연도별 대장균 크기의 편차 구하기 
+- 분화된 연도(YEAR), 분화된 연도별 대장균 크기의 편차(YEAR_DEV), 대장균 개체의 ID(ID) 를 출력하는 SQL 문을 작성해주세요.
+  분화된 연도별 대장균 크기의 편차는 분화된 연도별 가장 큰 대장균의 크기 - 각 대장균의 크기로 구하며 결과는 연도에 대해 오름차순으로 정렬하고 같은 연도에 대해서는 대장균 크기의 편차에 대해 오름차순으로 정렬해주세요.
+```SQL
+SELECT YEAR(DIFFERENTIATION_DATE)        AS YEAR
+     , MAX(SIZE_OF_COLONY) OVER(PARTITION BY(YEAR(DIFFERENTIATION_DATE))) - SIZE_OF_COLONY  AS YEAR_DEV
+     , ID
+  FROM ECOLI_DATA
+ ORDER BY YEAR, YEAR_DEV
+```
 ---------------------------------------------------------------------------------------------------------------------------
 ### SUM,MAX,MIN
 #### 1. 가장 비싼 상품 구하기
