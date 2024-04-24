@@ -288,10 +288,18 @@ SELECT COUNT (*)                -- 전체를 세고
   1번과 3번 형질을 모두 보유하고 있는 경우도 1번이나 3번 형질을 보유하고 있는 경우에 포함합니다.
 
 ``` SQL
+/*
 SELECT COUNT(A.GENOM)  AS 'COUNT'
   FROM (SELECT SUBSTRING(CONV(GENOTYPE, 10, 2), 2, 1)  AS GENOM		-- GENOTYPE을 2진수로 바꾼 후 문자열을 잘라 2번 형질 찾기
 	  FROM ECOLI_DATA )  A
  WHERE A.GENOM = 1							-- 2번 형질 Y=1, N=0
+*/
+
+-- 비트연산자 사용
+SELECT COUNT(GENOTYPE) AS COUNT
+  FROM ECOLI_DATA
+ WHERE GENOTYPE & 5		-- 00101(1, 3번 형질 보유)
+   AND NOT GENOTYPE & 2		-- 00010(2번 형질 보유X)
 ```
 ---------------------------------------------------------------------------------------------------------------------------
 ### SUM,MAX,MIN
