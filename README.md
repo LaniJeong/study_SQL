@@ -790,3 +790,19 @@ SELECT ANIMAL_ID
   FROM ANIMAL_INS
  ORDER BY ANIMAL_ID
 ```
+
+#### 5. 오랜 기간 보호한 동물(2)
+- 입양을 간 동물 중, 보호 기간이 가장 길었던 동물 두 마리의 아이디와 이름을 조회하는 SQL문을 작성해주세요. 이때 결과는 보호 기간이 긴 순으로 조회해야 합니다.
+```SQL
+SELECT A.ANIMAL_ID
+     , A.NAME
+  FROM ANIMAL_OUTS                  A
+  JOIN (SELECT B1.ANIMAL_ID                          AS ANIMAL_ID
+             , DATEDIFF(B1.DATETIME, A1.DATETIME)    AS PERIOD
+          FROM ANIMAL_INS               A1
+          LEFT OUTER JOIN ANIMAL_OUTS   B1
+                       ON (B1.ANIMAL_ID = A1.ANIMAL_ID)
+         ORDER BY PERIOD DESC
+         LIMIT 2)                   B
+    ON (B.ANIMAL_ID = A.ANIMAL_ID)
+```
